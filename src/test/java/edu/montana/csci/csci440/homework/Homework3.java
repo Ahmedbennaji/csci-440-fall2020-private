@@ -16,7 +16,18 @@ public class Homework3 extends DBTest {
      */
     public void createTracksPlusView(){
         //TODO fill this in
-        executeDDL("CREATE VIEW tracksPlus");
+        executeDDL("CREATE VIEW tracksPlus AS\n" +
+                "SELECT tracks.*,\n" +
+                "       albums.Title as AlbumTitle,\n" +
+                "       artists.Name as ArtistName\n" +
+                "        genres.Name as GenreName \n" +
+                "FROM tracks\n" +
+                "         JOIN albums ON\n" +
+                "        tracks.AlbumId = albums.AlbumId\n" +
+                "           JOIN genres ON \n" +
+                "            tracks.TrackId = genres.GenreId\n" +
+                "         JOIN artists ON\n" +
+                "        albums.ArtistId = artists.ArtistId;\n");
 
         List<Map<String, Object>> results = executeSQL("SELECT * FROM tracksPlus ORDER BY TrackId");
         assertEquals(3503, results.size());
@@ -61,7 +72,7 @@ public class Homework3 extends DBTest {
         Integer before = (Integer) executeSQL("SELECT COUNT(*) as COUNT FROM genres").get(0).get("COUNT");
 
         //TODO fill this in
-        executeUpdate("INSERT");
+        executeUpdate("INSERT INTO genres (Name) VALUES ('Rap'),('Hip-Hop'),('Jaz'), ('Rock'), ('Country');");
 
         Integer after = (Integer) executeSQL("SELECT COUNT(*) as COUNT FROM genres").get(0).get("COUNT");
         assertEquals(before + 5, after);
