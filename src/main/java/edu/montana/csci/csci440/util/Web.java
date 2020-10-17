@@ -220,7 +220,7 @@ public class Web {
 
     public static void init() {
         before((request, response) -> {
-            System.out.println(">> REQUEST " + request.requestMethod() + " " + request.pathInfo() + getParameterInfo());
+            System.out.println(">> REQUEST " + request.requestMethod() + " " + request.pathInfo() + getParameterInfo(request));
             Web.set(request, response, System.currentTimeMillis());
         });
         after((request, response) -> {
@@ -250,8 +250,8 @@ public class Web {
         });
     }
 
-    private static String getParameterInfo() {
-        Set<String> params = getRequest().queryParams();
+    private static String getParameterInfo(Request request) {
+        Set<String> params = request.queryParams();
         if (params.size() > 0) {
             StringBuilder str = new StringBuilder("\n   Parameters: {");
             Object[] paramsArr = params.toArray();
