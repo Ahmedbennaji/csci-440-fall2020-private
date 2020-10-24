@@ -261,7 +261,7 @@ public class Web {
                     str.append(", ");
                 }
                 Object o = paramsArr[i];
-                str.append(o.toString()).append(":").append(getRequest().queryParams(o.toString()));
+                str.append(o.toString()).append(":").append(request.queryParams(o.toString()));
             }
             str.append("}");
             return str.toString();
