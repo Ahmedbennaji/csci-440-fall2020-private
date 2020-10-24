@@ -261,4 +261,51 @@ public class Track extends Model {
         }
     }
 
+    @Override
+    public boolean create() {
+        if (verify()) {
+            try (Connection conn = DB.connect();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "INSERT INTO artists (name) VALUES (?)")) {
+                stmt.setString(1, this.getName());
+
+                stmt.executeUpdate();
+                trackId = DB.getLastID(conn);
+                return true;
+            } catch (SQLException sqlException) {
+                throw new RuntimeException(sqlException);
+            }
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public boolean verify() {
+        _errors.clear(); // clear any existing errors
+        if (name == null || "".equals(name)) {
+            addError("Tracks name can't be null or blank!");
+        }
+
+
+        return !hasErrors();
+    }
+    @Override
+    public boolean update() {
+        if (verify()) {
+            try (Connection conn = DB.connect();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "UPDATE tracks SET name =?")) {
+                stmt.setString(1, this.getName());
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException sqlException) {
+                throw new RuntimeException(sqlException);
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+
 }

@@ -11,7 +11,6 @@ import java.util.List;
 public class Employee extends Model {
 
     private Long employeeId;
-    private Long reportsTo;
     private String firstName;
     private String lastName;
     private String email;
@@ -26,8 +25,7 @@ public class Employee extends Model {
         lastName = results.getString("LastName");
         email = results.getString("Email");
         employeeId = results.getLong("EmployeeId");
-        reportsTo = results.getLong("ReportsTo");
-        title = results.getString("Title");
+
     }
 
     public static List<Employee.SalesSummary> getSalesSummaries() {
@@ -73,9 +71,9 @@ public class Employee extends Model {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
                          "INSERT INTO employees (LastName, FirstName,Title, Email) VALUES (?, ?, ?, ? )")) {
-                stmt.setString(1, this.getFirstName());
-                stmt.setString(2, this.getLastName());
-                stmt.setString(3,this.title);
+                stmt.setString(1, this.getLastName());
+                stmt.setString(2, this.getFirstName());
+                stmt.setString(3,this.getTitle());
                 stmt.setString(4, this.getEmail());
                 stmt.executeUpdate();
                 employeeId = DB.getLastID(conn);
@@ -125,14 +123,6 @@ public class Employee extends Model {
 
     public List<Customer> getCustomers() {
         return Customer.forEmployee(employeeId);
-    }
-
-    public Long getReportsTo() {
-        return reportsTo;
-    }
-
-    public void setReportsTo(Long reportsTo) {
-        this.reportsTo = reportsTo;
     }
 
     public List<Employee> getReports() {
@@ -196,13 +186,16 @@ public class Employee extends Model {
             throw new RuntimeException(sqlException);
         }
     }
-
+        public String getTitle(){
+        return title;
+        }
     public void setTitle(String programmer) {
         title = programmer;
     }
 
     public void setReportsTo(Employee employee) {
         // TODO implement
+
     }
 
     public static class SalesSummary {
