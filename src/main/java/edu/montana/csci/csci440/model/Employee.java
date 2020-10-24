@@ -70,10 +70,11 @@ public class Employee extends Model {
         if (verify()) {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
-                         "INSERT INTO employees (FirstName, LastName, Email) VALUES (?, ?, ?)")) {
+                         "INSERT INTO employees (LastName, FirstName,Title, Email) VALUES (?, ?, ?, ? )")) {
                 stmt.setString(1, this.getFirstName());
                 stmt.setString(2, this.getLastName());
-                stmt.setString(3, this.getEmail());
+                stmt.setString(3,this.title);
+                stmt.setString(4, this.getEmail());
                 stmt.executeUpdate();
                 employeeId = DB.getLastID(conn);
                 return true;
