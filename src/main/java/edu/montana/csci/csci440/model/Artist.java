@@ -24,7 +24,7 @@ public class Artist extends Model {
         artistId = results.getLong("ArtistId");
     }
 
-    public List<Album> getAlbums(){
+    public List<Album> getAlbums() {
         return Album.getForArtist(artistId);
     }
 
@@ -53,8 +53,8 @@ public class Artist extends Model {
              PreparedStatement stmt = conn.prepareStatement(
                      "SELECT * FROM artists LIMIT ? OFFSET ?  "
              )) {
-            stmt.setInt(1, count );
-            stmt.setInt(2,(page-1)*count);
+            stmt.setInt(1, count);
+            stmt.setInt(2, (page - 1) * count);
 
             ResultSet results = stmt.executeQuery();
             List<Artist> resultList = new LinkedList<>();
@@ -100,6 +100,7 @@ public class Artist extends Model {
             return false;
         }
     }
+
     @Override
     public boolean verify() {
         _errors.clear(); // clear any existing errors
@@ -109,6 +110,7 @@ public class Artist extends Model {
 
         return !hasErrors();
     }
+
     @Override
     public boolean update() {
         if (verify()) {
@@ -125,7 +127,5 @@ public class Artist extends Model {
             return false;
         }
     }
-
-
 
 }

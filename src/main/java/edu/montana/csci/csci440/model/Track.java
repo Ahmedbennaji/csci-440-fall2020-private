@@ -285,6 +285,9 @@ public class Track extends Model {
         if (name == null || "".equals(name)) {
             addError("Tracks name can't be null or blank!");
         }
+            if(albumId == null||"".equals(trackId)){
+                addError("album can't be null or blank");
+            }
 
 
         return !hasErrors();

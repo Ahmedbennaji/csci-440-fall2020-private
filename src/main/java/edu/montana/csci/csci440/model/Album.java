@@ -68,8 +68,8 @@ public class Album extends Model {
 
              )) {
 
-            stmt.setInt(1, count );
-            stmt.setInt(2,(page-1)*count);
+            stmt.setInt(1, count);
+            stmt.setInt(2, (page - 1) * count);
             ResultSet results = stmt.executeQuery();
             List<Album> resultList = new LinkedList<>();
             while (results.next()) {
@@ -95,6 +95,7 @@ public class Album extends Model {
             throw new RuntimeException(sqlException);
         }
     }
+
     @Override
     public boolean create() {
         if (verify()) {
@@ -103,8 +104,9 @@ public class Album extends Model {
                          "INSERT INTO albums (title) VALUES (?)")) {
                 stmt.setString(1, this.getTitle());
 
+
                 stmt.executeUpdate();
-                albumId= DB.getLastID(conn);
+                albumId = DB.getLastID(conn);
                 return true;
             } catch (SQLException sqlException) {
                 throw new RuntimeException(sqlException);
@@ -113,18 +115,20 @@ public class Album extends Model {
             return false;
         }
     }
+
     @Override
     public boolean verify() {
         _errors.clear(); // clear any existing errors
         if (title == null || "".equals(title)) {
             addError("album title can't be null or blank!");
         }
-        if( artistId == null ||"".equals((albumId))){
+        if (artistId == null || "".equals((albumId))) {
             addError("artist Id cannot be null ");
         }
 
         return !hasErrors();
     }
+
     @Override
     public boolean update() {
         if (verify()) {
@@ -145,10 +149,23 @@ public class Album extends Model {
 
     public static List<Album> getForArtist(Long artistId) {
         // TODO implement
+        String query = "SELECT * FROM albums WHERE artistId=?";
+        try (Connection conn = DB.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setLong(1, artistId);
+            ResultSet results = stmt.executeQuery();
+            List<Album> resultList = new LinkedList<>();
+            while (results.next()) {
+                resultList.add(new Album(results));
+            }
+            return resultList;
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
 
 
+          //  return Collections.emptyList();
+        }
 
-        return Collections.emptyList();
     }
 
 }
