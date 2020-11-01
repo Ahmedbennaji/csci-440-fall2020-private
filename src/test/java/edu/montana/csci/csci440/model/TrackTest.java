@@ -111,7 +111,7 @@ public class TrackTest extends DBTest {
 
         // cache should have been invalidated
         count = Track.count();
-        assertEquals(initialCount + 2, DB.getConnectionCount());
+        assertEquals(initialCount + 4, DB.getConnectionCount());
 
     }
 
