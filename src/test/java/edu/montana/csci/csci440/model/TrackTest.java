@@ -40,6 +40,21 @@ public class TrackTest extends DBTest {
     }
 
     @Test
+    void testDeleteWorks() {
+        Track track = new Track();
+
+        track.setName("Example");
+        track.setAlbum(Album.find(1));
+
+        assertNull(track.getTrackId());
+        track.create();
+        assertNotNull(track.getTrackId());
+        track.delete();
+
+        assertNull(Track.find(track.getTrackId()));
+    }
+
+    @Test
     void testValidationWorks() {
         Track track = new Track();
 
