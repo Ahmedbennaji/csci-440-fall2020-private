@@ -16,7 +16,11 @@ public class Artist extends Model {
     Long artistId;
     String name;
 
+
+
     public Artist() {
+
+
     }
 
     private Artist(ResultSet results) throws SQLException {
@@ -42,6 +46,9 @@ public class Artist extends Model {
 
     public void setName(String name) {
         this.name = name;
+
+
+
     }
 
     public static List<Artist> all() {
@@ -116,9 +123,9 @@ public class Artist extends Model {
         if (verify()) {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
-                         "UPDATE artists SET name =?")) {
+                         "UPDATE artists SET name =? WHERE  Artistid=?  ")) {
                 stmt.setString(1, this.getName());
-                stmt.executeUpdate();
+                int i = stmt.executeUpdate();
                 return true;
             } catch (SQLException sqlException) {
                 throw new RuntimeException(sqlException);

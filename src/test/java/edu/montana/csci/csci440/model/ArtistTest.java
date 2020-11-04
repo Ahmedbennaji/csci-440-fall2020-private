@@ -59,7 +59,6 @@ public class ArtistTest extends DBTest {
         assertFalse(Artist.verify());
         // expect a name
         assertEquals(1, Artist.getErrors().size());
-
         Artist.setName("Example");
         assertTrue(Artist.verify());
         assertEquals(0, Artist.getErrors().size());

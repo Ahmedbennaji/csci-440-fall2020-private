@@ -15,6 +15,7 @@ public class Employee extends Model {
     private String lastName;
     private String email;
     private String title;
+    private Long reportsTo;
 
     public Employee() {
         // new employee for insert
@@ -24,7 +25,10 @@ public class Employee extends Model {
         firstName = results.getString("FirstName");
         lastName = results.getString("LastName");
         email = results.getString("Email");
+        title = results.getString("Title");
         employeeId = results.getLong("EmployeeId");
+        reportsTo = results.getLong("ReportsTo");
+
 
     }
 
@@ -36,11 +40,15 @@ public class Employee extends Model {
     @Override
     public boolean verify() {
         _errors.clear(); // clear any existing errors
+
         if (firstName == null || "".equals(firstName)) {
             addError("FirstName can't be null or blank!");
         }
         if (lastName == null || "".equals(lastName)) {
             addError("LastName can't be null!");
+        }
+        if(email == null ||"".equals(email) ||!email.contains("@") ){
+            addError("email can't be null or empty or does not contain @");
         }
         return !hasErrors();
     }
@@ -51,10 +59,10 @@ public class Employee extends Model {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
                          "UPDATE employees SET FirstName=?, LastName=?, Email=? WHERE EmployeeId=?")) {
-                stmt.setString(1, this.getFirstName());
-                stmt.setString(2, this.getLastName());
-                stmt.setString(3, this.getEmail());
-                stmt.setLong(4, this.getEmployeeId());
+                stmt.setString(2, this.getFirstName());
+                stmt.setString(1, this.getLastName());
+                stmt.setString(4, this.getEmail());
+                stmt.setLong(5, this.getEmployeeId());
                 stmt.executeUpdate();
                 return true;
             } catch (SQLException sqlException) {
@@ -125,6 +133,13 @@ public class Employee extends Model {
         return Customer.forEmployee(employeeId);
     }
 
+    public Long getReportsTo() {
+        return reportsTo;
+    }
+     public void setReportsTo(Long reportsTo) {
+     this.reportsTo = reportsTo;
+    }
+
     public List<Employee> getReports() {
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
@@ -188,7 +203,7 @@ public class Employee extends Model {
     }
         public String getTitle(){
         return title;
-        }
+       }
     public void setTitle(String programmer) {
         title = programmer;
     }

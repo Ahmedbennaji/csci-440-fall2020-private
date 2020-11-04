@@ -17,6 +17,7 @@ public class Album extends Model {
     String title;
 
     public Album() {
+
     }
 
     private Album(ResultSet results) throws SQLException {
@@ -101,8 +102,9 @@ public class Album extends Model {
         if (verify()) {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
-                         "INSERT INTO albums (title) VALUES (?)")) {
+                         "INSERT INTO albums (title, ArtistId) VALUES (?, ?)")) {
                 stmt.setString(1, this.getTitle());
+                stmt.setLong(2, this.getArtistId());
 
 
                 stmt.executeUpdate();
