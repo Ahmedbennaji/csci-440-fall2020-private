@@ -6,6 +6,7 @@ import edu.montana.csci.csci440.util.DB;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,7 +93,9 @@ public class EmployeeTest extends DBTest {
         List<Employee.SalesSummary> salesSummaries = Employee.getSalesSummaries();
         assertEquals("jane@chinookcorp.com", salesSummaries.get(0).getEmail());
         assertEquals(146, salesSummaries.get(0).getSalesCount());
-        assertEquals(new BigDecimal("833.04"), salesSummaries.get(0).getSalesTotals());
+        final BigDecimal salesTotals = salesSummaries.get(0).getSalesTotals();
+        salesTotals.setScale(2, RoundingMode.HALF_DOWN);
+        assertEquals(new BigDecimal("833.04"), salesTotals);
     }
 
 }
