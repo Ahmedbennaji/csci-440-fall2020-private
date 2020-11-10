@@ -34,6 +34,7 @@ public class Employee extends Model {
 
     public static List<Employee.SalesSummary> getSalesSummaries() {
         //TODO - a GROUP BY query to determine the sales (look at the invoices table), using the SalesSummary class
+
         return Collections.emptyList();
     }
 
@@ -59,10 +60,11 @@ public class Employee extends Model {
             try (Connection conn = DB.connect();
                  PreparedStatement stmt = conn.prepareStatement(
                          "UPDATE employees SET FirstName=?, LastName=?, Email=? WHERE EmployeeId=?")) {
-                stmt.setString(2, this.getFirstName());
                 stmt.setString(1, this.getLastName());
-                stmt.setString(4, this.getEmail());
-                stmt.setLong(5, this.getEmployeeId());
+                stmt.setString(2, this.getFirstName());
+               // stmt.setString(3,this.getTitle());
+                stmt.setString(3, this.getEmail());
+                stmt.setLong(4, this.getEmployeeId());
                 stmt.executeUpdate();
                 return true;
             } catch (SQLException sqlException) {
@@ -123,6 +125,7 @@ public class Employee extends Model {
     }
     public void setEmail(String email) {
         this.email = email;
+
     }
 
     public Long getEmployeeId() {
@@ -157,8 +160,8 @@ public class Employee extends Model {
         }
     }
     public Employee getBoss() {
-        //TODO implement
-        return null;
+      return find(employeeId) ;
+       //return null;
     }
 
     public static List<Employee> all() {
@@ -179,17 +182,19 @@ public class Employee extends Model {
             }
             return resultList;
         } catch (SQLException sqlException) {
+
             throw new RuntimeException(sqlException);
         }
     }
 
     public static Employee findByEmail(String newEmailAddress) {
-        throw new UnsupportedOperationException("Implement me");
+    //    return Employee.findByEmail(newEmailAddress);
+   throw new UnsupportedOperationException("Implement me");
     }
 
     public static Employee find(long employeeId) {
         try (Connection conn = DB.connect();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM employees WHERE EmployeeId=?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM employees WHERE EmployeeId=? ")) {
             stmt.setLong(1, employeeId);
             ResultSet results = stmt.executeQuery();
             if (results.next()) {

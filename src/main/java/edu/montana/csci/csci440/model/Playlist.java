@@ -24,10 +24,34 @@ public class Playlist extends Model {
     }
 
 
-    public List<Track> getTracks(){
+    public List<Track> getTracks() {
         // TODO implement, order by track name
-        return Collections.emptyList();
+     /*  try (Connection conn = DB.connect();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM  Tracks\n" +
+                             "Left  join    playlist_track\n" +
+                             "  ON  playlist_track.TrackId = playlists.PlaylistId\n" +
+                             "Left  JOIN tracks\n" +
+                             "\n" +
+                             "    ON tracks.Name = playlist_track.TrackId\n" +
+                             "    order by Name"
+             )) {
+
+            ResultSet results = stmt.executeQuery();
+            List<Track> resultList = new LinkedList<>();
+            while (results.next()) {
+                resultList.add(new Track(results));
+            }
+            return resultList;
+        } catch (SQLException sqlException) {
+
+            throw new RuntimeException(sqlException);
+        }*/
+
+       return Collections.emptyList();
     }
+
+
 
     public Long getPlaylistId() {
         return playlistId;

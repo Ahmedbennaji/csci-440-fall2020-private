@@ -10,7 +10,7 @@ import java.util.Map;
 public class EmployeeHelper {
     public static String makeEmployeeTree() {
         // TODO, change this to use a single query operation to get all employees
-        Employee employee = Employee.find(1); // root employee
+       Employee employee = Employee.find(1); // root employee
         // and use this data structure to maintain reference information needed to build the tree structure
         Map<Long, List<Employee>> employeeMap = new HashMap<>();
         List<Employee> all = Employee.all();
@@ -31,9 +31,9 @@ public class EmployeeHelper {
     public static String makeTree(Employee employee, Map<Long, List<Employee>> employeeMap) {
         String list = "<li><a href='/employees" + employee.getEmployeeId() + "'>"
                 + employee.getEmail() + "</a><ul>";
-       // List<Employee> reports = employee.getReports();
-       // for (Employee report : reports) {
-          //  list += makeTree(report, employeeMap);
+       // List<Employee>  = employee.getReports();
+        //for (Employee emp : reports) {
+           // list += makeTree(employee, employeeMap);
         //}
         return list + "</ul></li>";
     }
