@@ -126,8 +126,15 @@ public class Artist extends Model {
                 stmt.setString(1, this.getName());
                 stmt.setLong(2,this.getArtistId());
                 stmt.setString(3,this.getName1());
-                int i = stmt.executeUpdate();
-                return true ;
+             if(stmt.executeUpdate()==0) {
+
+
+                 return false;
+             }
+             else{
+                 stmt.executeUpdate();
+                 return true;
+             }
             } catch (SQLException sqlException) {
                 throw new RuntimeException(sqlException);
             }
