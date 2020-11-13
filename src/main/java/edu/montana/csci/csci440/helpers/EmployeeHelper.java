@@ -31,10 +31,10 @@ public class EmployeeHelper {
     public static String makeTree(Employee employee, Map<Long, List<Employee>> employeeMap) {
         String list = "<li><a href='/employees" + employee.getEmployeeId() + "'>"
                 + employee.getEmail() + "</a><ul>";
-        List<Employee> reports  = employee.getReports();
-        for (Employee report : reports) {
-           list += makeTree(employee, employeeMap);
-        }
+       // List<Employee> reports  = employee.getReports();
+    //    for (Employee report : reports) {
+         //  list += makeTree(employee, employeeMap);
+       // }
         return list + "</ul></li>";
     }
 }

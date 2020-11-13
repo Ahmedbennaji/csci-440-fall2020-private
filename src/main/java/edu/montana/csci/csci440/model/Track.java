@@ -163,8 +163,6 @@ public class Track extends Model {
     }
 
     public String getAlbumTitle() {
-
-
         // TODO implement more efficiently
         //  hint: cache on this model object
         return getAlbum().getTitle();
@@ -177,6 +175,7 @@ public class Track extends Model {
 
         String query = "SELECT * FROM tracks " +
                 "JOIN albums ON tracks.AlbumId = albums.AlbumId " +
+
                 "WHERE name LIKE ?";
         args.add("%" + search + "%");
 
