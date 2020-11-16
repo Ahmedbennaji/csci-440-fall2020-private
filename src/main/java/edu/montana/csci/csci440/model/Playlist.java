@@ -15,42 +15,43 @@ public class Playlist extends Model {
     Long playlistId;
     String name;
 
+
     public Playlist() {
     }
 
     private Playlist(ResultSet results) throws SQLException {
         name = results.getString("Name");
         playlistId = results.getLong("PlaylistId");
+
     }
+
 
 
     public List<Track> getTracks() {
         // TODO implement, order by track name
-     /*  try (Connection conn = DB.connect();
+       try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM  Tracks\n" +
-                             "Left  join    playlist_track\n" +
-                             "  ON  playlist_track.TrackId = playlists.PlaylistId\n" +
-                             "Left  JOIN tracks\n" +
+                     "\n" +
+                             "SELECT  * from tracks\n" +
+                             "JOIN playlist_track on tracks.TrackId = playlist_track.TrackId\n" +
+                             "JOIN playlists on playlist_track.PlaylistId = playlists.PlaylistId\n" +
                              "\n" +
-                             "    ON tracks.Name = playlist_track.TrackId\n" +
-                             "    order by Name"
+                             "WHERE  playlists.PlaylistId= ?\n" +
+                             "order by tracks.Name;"
              )) {
 
-            ResultSet results = stmt.executeQuery();
-            List<Track> resultList = new LinkedList<>();
-            while (results.next()) {
-                resultList.add(new Track(results));
-            }
-            return resultList;
-        } catch (SQLException sqlException) {
+           stmt.setLong(1, this.getPlaylistId());
+           ResultSet results = stmt.executeQuery();
+           List<Track> resultList = new LinkedList<>();
+           while (results.next()) {
+               resultList.add(new Track(results));
+           }
+           return resultList;
+       } catch (SQLException sqlException) {
+           throw new RuntimeException(sqlException);
+       }
 
-            throw new RuntimeException(sqlException);
-        }*/
-
-       return Collections.emptyList();
     }
-
 
 
     public Long getPlaylistId() {
