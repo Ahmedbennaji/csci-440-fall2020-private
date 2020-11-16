@@ -36,9 +36,11 @@ public class Employee extends Model {
         //TODO - a GROUP BY query to determine the sales (look at the invoices table), using the SalesSummary class
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
-                     ""
+                     "SELECT employees.FirstName, employees.LastName, employees.Email From employees\n" +
+                             "JOIN customers on employees.EmployeeId = customers.SupportRepId\n" +
+                             "JOIN invoices on customers.CustomerId = invoices.CustomerId\n" +
+                             "WHERE employees.EmployeeId = 3"
              )) {
-
             ResultSet results = stmt.executeQuery();
             List<Employee.SalesSummary> resultList = new LinkedList<>();
             while (results.next()) {
@@ -174,8 +176,8 @@ public class Employee extends Model {
         }
     }
     public Employee getBoss() {
-      return find(employeeId) ;
-       //return null;
+            return Employee.find(reportsTo);
+
     }
 
     public static List<Employee> all() {
@@ -202,8 +204,20 @@ public class Employee extends Model {
     }
 
     public static Employee findByEmail(String newEmailAddress) {
-    //    return Employee.findByEmail(newEmailAddress);
-   throw new UnsupportedOperationException("Implement me");
+       // return Employee.findByEmail(newEmailAddress);
+        try (Connection conn = DB.connect();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM employees Where Email = ?")) {
+            stmt.setString(1, newEmailAddress);
+            ResultSet results = stmt.executeQuery();
+            if (results.next()) {
+                return new Employee(results);
+            } else {
+                return null;
+            }
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
+        }
+//   throw new UnsupportedOperationException("Implement me");
     }
 
     public static Employee find(long employeeId) {
@@ -228,7 +242,8 @@ public class Employee extends Model {
     }
 
     public void setReportsTo(Employee employee) {
-        // TODO implement
+        employee.employeeId = reportsTo;
+
 
     }
 
