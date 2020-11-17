@@ -36,10 +36,12 @@ public class Employee extends Model {
         //TODO - a GROUP BY query to determine the sales (look at the invoices table), using the SalesSummary class
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT employees.FirstName, employees.LastName, employees.Email From employees\n" +
-                             "JOIN customers on employees.EmployeeId = customers.SupportRepId\n" +
-                             "JOIN invoices on customers.CustomerId = invoices.CustomerId\n" +
-                             "WHERE employees.EmployeeId = 3"
+"SELECT employees.LastName,employees.FirstName, employees.Email,  ROUND(SUM(invoices.Total),2) AS SalesTotal, COUNT(invoices.Total) AS SalesCount\n" +
+        "    FROM (invoices\n" +
+        "        INNER JOIN customers c on invoices.CustomerId = c.CustomerId\n" +
+        "        INNER JOIN employees  on c.SupportRepId = employees.EmployeeId)\n" +
+      "     WHERE employees.EmployeeId = 3" +
+        "        GROUP BY employees.LastName;"
              )) {
             ResultSet results = stmt.executeQuery();
             List<Employee.SalesSummary> resultList = new LinkedList<>();
@@ -178,6 +180,11 @@ public class Employee extends Model {
     public Employee getBoss() {
             return Employee.find(reportsTo);
 
+
+    }
+
+    public void setReportsTo(Employee employee) {
+
     }
 
     public static List<Employee> all() {
@@ -241,11 +248,7 @@ public class Employee extends Model {
         title = programmer;
     }
 
-    public void setReportsTo(Employee employee) {
-        employee.employeeId = reportsTo;
 
-
-    }
 
     public static class SalesSummary {
         private String firstName;
