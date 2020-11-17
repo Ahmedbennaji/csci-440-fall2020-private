@@ -157,9 +157,9 @@ public class Employee extends Model {
     public Long getReportsTo() {
         return reportsTo;
     }
-     public void setReportsTo(Long reportsTo) {
-     this.reportsTo = reportsTo;
-    }
+    // public void setReportsTo(Long reportsTo) {
+    // this.reportsTo = reportsTo;
+    //}
 
     public List<Employee> getReports() {
         try (Connection conn = DB.connect();
@@ -184,6 +184,7 @@ public class Employee extends Model {
     }
 
     public void setReportsTo(Employee employee) {
+       reportsTo = employee.employeeId;
 
     }
 
