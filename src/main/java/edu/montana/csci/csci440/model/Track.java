@@ -19,7 +19,7 @@ public class Track extends Model {
     private Long mediaTypeId;
     private Long genreId;
     private String name;
-    public String ArtistName;
+    public String Artist;
      public String title;
     private Long milliseconds;
     private Long bytes;
@@ -45,13 +45,13 @@ public class Track extends Model {
         albumId = results.getLong("AlbumId");
         mediaTypeId = results.getLong("MediaTypeId");
         genreId = results.getLong("GenreId");
-        title = results.getString("Title");
-        ArtistName = results.getString("ArtistName");
+        title = results.getString("title");
+        Artist = results.getString("Artist");
     }
 
     public static Track find(long i) {
         try (Connection conn = DB.connect();
-             PreparedStatement stmt = conn.prepareStatement("SELECT tracks.*, Albums.Title, Artists.Name as ArtistName FROM tracks JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
+             PreparedStatement stmt = conn.prepareStatement("SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
                      "JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
                      "WHERE TrackId =?")) {
             stmt.setLong(1, i);
@@ -111,10 +111,10 @@ public class Track extends Model {
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
 
-            "        SELECT * FROM playlists\n" +
+            " SELECT * FROM playlists\n" +
                     "    join playlist_track on " +
                     "playlists.PlaylistId = playlist_track.PlaylistId\n" +
-                    "   join tracks on" +
+                    "join tracks on" +
                     " tracks.TrackId = playlist_track.TrackId " +
                     "WHERE ? = playlist_track.TrackId AND playlists.PlaylistId = playlist_track.PlaylistId;"
              )) {
@@ -205,7 +205,7 @@ public class Track extends Model {
     public String getArtistName() {
         // TODO implement more efficiently
         //  hint: cache on this model object
-        return ArtistName;
+        return Artist;
     }
 
     public String getAlbumTitle() {
@@ -251,7 +251,7 @@ public class Track extends Model {
     }
 
     public static List<Track> search(int page, int count, String orderBy, String search) {
-        String query = "SELECT tracks.*, Albums.Title, Artists.Name as ArtistName FROM tracks" +
+        String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks" +
                 " JOIN albums on albums.AlbumId = tracks.AlbumId" +
                 "  JOIN artists on artists.ArtistId = albums.ArtistId" +
                 "     WHERE tracks.name LIKE ? LIMIT ?";
@@ -272,7 +272,7 @@ public class Track extends Model {
     }
 
     public static List<Track> forAlbum(Long albumId) {
-        String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as ArtistName \n" +
+        String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist \n" +
                 " From tracks \n" +
                 "JOIN albums on tracks.AlbumId = albums.AlbumId\n" +
                 " JOIN artists on albums.ArtistId = artists.ArtistId\n" +
@@ -304,7 +304,7 @@ public class Track extends Model {
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
 
-" SELECT tracks.*, Albums.Title as title, Artists.Name as ArtistName FROM tracks \n" +
+" SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks \n" +
         "   INNER JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
         "  INNER JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
         " ORDER BY " + orderBy + "  LIMIT  ? OFFSET ?"
