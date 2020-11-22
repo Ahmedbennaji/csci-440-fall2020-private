@@ -274,9 +274,9 @@ public class Track extends Model {
     public static List<Track> forAlbum(Long albumId) {
         String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist \n" +
                 " From tracks \n" +
-                "JOIN albums on tracks.AlbumId = albums.AlbumId\n" +
                 " JOIN artists on albums.ArtistId = artists.ArtistId\n" +
-                "    WHERE tracks.AlbumId=?;";
+                "JOIN albums on tracks.AlbumId = albums.AlbumId\n" +
+                "WHERE tracks.AlbumId=?;";
         try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setLong(1, albumId);
