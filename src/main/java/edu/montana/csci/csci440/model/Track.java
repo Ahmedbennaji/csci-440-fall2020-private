@@ -252,8 +252,8 @@ public class Track extends Model {
 
     public static List<Track> search(int page, int count, String orderBy, String search) {
         String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks" +
-                " JOIN albums on albums.AlbumId = tracks.AlbumId" +
                 "  JOIN artists on artists.ArtistId = albums.ArtistId" +
+                " JOIN albums on albums.AlbumId = tracks.AlbumId" +
                 "     WHERE tracks.name LIKE ? LIMIT ?";
         search = "%" + search + "%";
         try (Connection conn = DB.connect();
