@@ -22,6 +22,10 @@
         <td>Email</td>
         <td>$!employee.email</td>
     </tr>
+    <tr>
+        <td>Boss</td>
+        <td>$!employee.title</td>
+    </tr>
     </tbody>
 </table>
 

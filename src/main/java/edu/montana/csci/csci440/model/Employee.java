@@ -40,8 +40,8 @@ public class Employee extends Model {
         "    FROM (invoices\n" +
         "        INNER JOIN customers c on invoices.CustomerId = c.CustomerId\n" +
         "        INNER JOIN employees  on c.SupportRepId = employees.EmployeeId)\n" +
-      "     WHERE employees.EmployeeId = 3" +
-        "        GROUP BY employees.LastName;"
+    //  "     WHERE employees.EmployeeId = 3" +
+        "        GROUP BY employees.EmployeeId;"
              )) {
             ResultSet results = stmt.executeQuery();
             List<Employee.SalesSummary> resultList = new LinkedList<>();
@@ -66,7 +66,7 @@ public class Employee extends Model {
         if (lastName == null || "".equals(lastName)) {
             addError("LastName can't be null!");
         }
-        if(email == null ||"".equals(email) ||!email.contains("@") ){
+        if(email == null ||!email.contains("@") ){
             addError("email can't be null or empty or does not contain @");
         }
         return !hasErrors();

@@ -30,9 +30,15 @@ public class Album extends Model {
         return Artist.find(artistId);
     }
 
+
+
+    public void setArtistId(Long artistId) { this.artistId = artistId; }
+
     public void setArtist(Artist artist) {
         artistId = artist.getArtistId();
     }
+
+
 
     public List<Track> getTracks() {
         return Track.forAlbum(albumId);
@@ -124,9 +130,11 @@ public class Album extends Model {
         if (title == null || "".equals(title)) {
             addError("album title can't be null or blank!");
         }
-        if (artistId == null || "".equals((albumId))) {
-            addError("artist Id cannot be null ");
+
+        if (artistId  == null||"".equals(title)){
+           addError("artist can't be null ");
         }
+
 
         return !hasErrors();
     }
@@ -168,6 +176,18 @@ public class Album extends Model {
           //  return Collections.emptyList();
         }
 
+    }
+
+    @Override
+    public void delete() {
+        try (Connection conn = DB.connect();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "DELETE FROM albums WHERE title=?")) {
+            stmt.setLong(1, this.getAlbumId());
+            stmt.executeUpdate();
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
+        }
     }
 
 }

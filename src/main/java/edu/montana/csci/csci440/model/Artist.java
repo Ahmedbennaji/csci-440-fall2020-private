@@ -25,9 +25,9 @@ public class Artist extends Model {
         artistId = results.getLong("ArtistId");
         name1 = results.getString("Name");
     }
-    public List<Album> getAlbums() {
-        return Album.getForArtist(artistId);
-    }
+   public List<Album> getAlbums() {
+       return Album.getForArtist(artistId);
+   }
 
     public Long getArtistId() {
         return artistId;

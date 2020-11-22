@@ -19,7 +19,7 @@ public class Playlist extends Model {
     public Playlist() {
     }
 
-    private Playlist(ResultSet results) throws SQLException {
+    Playlist(ResultSet results) throws SQLException {
         name = results.getString("Name");
         playlistId = results.getLong("PlaylistId");
 
@@ -32,7 +32,7 @@ public class Playlist extends Model {
        try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
                      "\n" +
-                             "SELECT  * from tracks\n" +
+                             "SELECT * from tracks\n" +
                              "JOIN playlist_track on tracks.TrackId = playlist_track.TrackId\n" +
                              "JOIN playlists on playlist_track.PlaylistId = playlists.PlaylistId\n" +
                              "\n" +

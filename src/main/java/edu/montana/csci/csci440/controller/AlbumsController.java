@@ -1,6 +1,7 @@
 package edu.montana.csci.csci440.controller;
 
 import edu.montana.csci.csci440.model.Album;
+import edu.montana.csci.csci440.model.Artist;
 import edu.montana.csci.csci440.util.Web;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class AlbumsController {
 
         post("/albums/new", (req, resp) -> {
             Album album = new Album();
-            Web.putValuesInto(album, "Title");
+            Web.putValuesInto(album, "Title", "ArtistId");
             if (album.create()) {
                 Web.message("Created A Album!");
                 return Web.redirect("/albums/" + album.getAlbumId());
