@@ -305,8 +305,8 @@ public class Track extends Model {
              PreparedStatement stmt = conn.prepareStatement(
 
 " SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks \n" +
-        "   INNER JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
-        "  INNER JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
+        "   JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
+        "  JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
         " ORDER BY " + orderBy + "  LIMIT  ? OFFSET ?"
              )) {
             stmt.setInt(1, count);
