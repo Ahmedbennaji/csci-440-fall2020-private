@@ -51,7 +51,8 @@ public class Track extends Model {
 
     public static Track find(long i) {
         try (Connection conn = DB.connect();
-             PreparedStatement stmt = conn.prepareStatement("SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
+             PreparedStatement stmt = conn.prepareStatement("SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks " +
+                     "JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
                      "JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
                      "WHERE TrackId =?")) {
             stmt.setLong(1, i);
@@ -251,9 +252,13 @@ public class Track extends Model {
     }
 
     public static List<Track> search(int page, int count, String orderBy, String search) {
-        String query = "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks" +
-                "  JOIN artists on artists.ArtistId = albums.ArtistId" +
-                " JOIN albums on albums.AlbumId = tracks.AlbumId" +
+        String query =
+
+
+
+        "SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks " +
+                "JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
+                "JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
                 "     WHERE tracks.name LIKE ? LIMIT ?";
         search = "%" + search + "%";
         try (Connection conn = DB.connect();

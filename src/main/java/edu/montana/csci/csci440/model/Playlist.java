@@ -31,8 +31,10 @@ public class Playlist extends Model {
         // TODO implement, order by track name
        try (Connection conn = DB.connect();
              PreparedStatement stmt = conn.prepareStatement(
-                     "\n" +
-                             "SELECT * from tracks\n" +
+
+                            " SELECT tracks.*, Albums.Title as title, Artists.Name as Artist FROM tracks " +
+                     "JOIN albums ON albums.AlbumID = tracks.AlbumID\n" +
+                             "JOIN artists ON artists.ArtistId = albums.ArtistId\n" +
                              "JOIN playlist_track on tracks.TrackId = playlist_track.TrackId\n" +
                              "JOIN playlists on playlist_track.PlaylistId = playlists.PlaylistId\n" +
                              "\n" +
